@@ -12,10 +12,11 @@ import (
 )
 
 type DiscordAPI struct {
-	ctx context.Context
-	cr  domain.ChannelRepository
-	dg  *discordgo.Session
-	db  *sql.DB
+	ctx    context.Context
+	cr     domain.ChannelRepository
+	dg     *discordgo.Session
+	db     *sql.DB
+	logger *log.Logger
 }
 
 func NewDiscordAPI(ctx context.Context, db *sql.DB) *DiscordAPI {
@@ -25,10 +26,11 @@ func NewDiscordAPI(ctx context.Context, db *sql.DB) *DiscordAPI {
 	}
 
 	return &DiscordAPI{
-		ctx: ctx,
-		cr:  repository.NewSqliteChannelRepository(db),
-		dg:  dg,
-		db:  db,
+		ctx:    ctx,
+		cr:     repository.NewSqliteChannelRepository(db),
+		dg:     dg,
+		db:     db,
+		logger: log.New(os.Stdout, "discord: ", log.LstdFlags),
 	}
 }
 
@@ -45,7 +47,7 @@ func (a *DiscordAPI) Start() error {
 	// Waits for context cancellation (ctrl+c)
 	<-a.ctx.Done()
 
-	log.Println("Shutting down Discord connection...")
+	a.logger.Println("Shutting down Discord connection...")
 	err = a.dg.Close()
 	if err != nil {
 		return fmt.Errorf("could not close Discord session: %v", err)

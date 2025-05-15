@@ -20,13 +20,13 @@ func (a *DiscordAPI) pingpong(s *discordgo.Session, m *discordgo.MessageCreate) 
 	} else if m.Content == "pong" {
 		s.ChannelMessageSend(m.ChannelID, "Ping!")
 	} else if m.Content == "!viewAll" {
-		fmt.Println("detected")
+		a.logger.Println("detected")
 		var prettyChannels string
 		channels, err := a.cr.GetAll(a.ctx)
 		if err != nil {
 			log.Println(err)
 		}
-		fmt.Println("channels:", channels)
+		a.logger.Println("channels:", channels)
 		for _, channel := range channels {
 			prettyChannels += fmt.Sprintf("ChannelID: %s\n", channel.ChannelID)
 		}
