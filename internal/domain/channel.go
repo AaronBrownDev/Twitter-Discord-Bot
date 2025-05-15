@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 type Channel struct {
 	GuildID    string
@@ -9,6 +12,6 @@ type Channel struct {
 }
 
 type ChannelRepository interface {
-	GetAll() ([]Channel, error)
-	SetChannel(guildID, channelID string) error
+	GetAll(ctx context.Context) ([]Channel, error)
+	SetChannel(ctx context.Context, guildID, channelID string) error
 }
