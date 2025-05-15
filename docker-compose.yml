@@ -5,4 +5,4 @@ services:
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
     volumes:
-      - ./data:/root/sqlite
+      - ./sqlite:/root/sqlite
