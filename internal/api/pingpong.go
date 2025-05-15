@@ -1,6 +1,10 @@
 package api
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"fmt"
+	"github.com/bwmarrin/discordgo"
+	"log"
+)
 
 func (a *DiscordAPI) pingpong(s *discordgo.Session, m *discordgo.MessageCreate) {
 
@@ -9,10 +13,24 @@ func (a *DiscordAPI) pingpong(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 
+	log.Println(m.Content)
+
 	if m.Content == "ping" {
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
 	} else if m.Content == "pong" {
 		s.ChannelMessageSend(m.ChannelID, "Ping!")
+	} else if m.Content == "!viewAll" {
+		fmt.Println("detected")
+		var prettyChannels string
+		channels, err := a.cr.GetAll(a.ctx)
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("channels:", channels)
+		for _, channel := range channels {
+			prettyChannels += fmt.Sprintf("ChannelID: %s\n", channel.ChannelID)
+		}
+		s.ChannelMessageSend(m.ChannelID, prettyChannels)
 	}
 
 }
