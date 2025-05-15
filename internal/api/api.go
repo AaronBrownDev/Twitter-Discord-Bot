@@ -4,29 +4,35 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/domain"
+	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/repository"
 	"github.com/bwmarrin/discordgo"
 	"log"
 	"os"
 )
 
 type DiscordAPI struct {
-	dg *discordgo.Session
-	db *sql.DB
+	ctx context.Context
+	cr  domain.ChannelRepository
+	dg  *discordgo.Session
+	db  *sql.DB
 }
 
-func NewDiscordAPI(db *sql.DB) *DiscordAPI {
+func NewDiscordAPI(ctx context.Context, db *sql.DB) *DiscordAPI {
 	dg, err := discordgo.New("Bot " + os.Getenv("DISCORD_TOKEN"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	return &DiscordAPI{
-		dg: dg,
-		db: db,
+		ctx: ctx,
+		cr:  repository.NewSqliteChannelRepository(db),
+		dg:  dg,
+		db:  db,
 	}
 }
 
-func (a *DiscordAPI) Start(ctx context.Context) error {
+func (a *DiscordAPI) Start() error {
 	a.addHandlers()
 
 	a.dg.Identify.Intents = discordgo.IntentsGuildMessages
@@ -37,7 +43,7 @@ func (a *DiscordAPI) Start(ctx context.Context) error {
 	}
 
 	// Waits for context cancellation (ctrl+c)
-	<-ctx.Done()
+	<-a.ctx.Done()
 
 	log.Println("Shutting down Discord connection...")
 	err = a.dg.Close()
