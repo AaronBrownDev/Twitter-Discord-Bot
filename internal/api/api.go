@@ -57,4 +57,5 @@ func (a *DiscordAPI) Start() error {
 // addHandlers is a helper function that adds all the handlers to the Discord session.
 func (a *DiscordAPI) addHandlers() {
 	a.dg.AddHandler(a.pingpong)
+	a.dg.AddHandler(a.setChannelWithPrefix)
 }
