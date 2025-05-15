@@ -1,12 +1,13 @@
 package cmd
 
 import (
+	"context"
 	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/api"
 	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/database"
 	"log"
 )
 
-func APICmd() error {
+func APICmd(ctx context.Context) error {
 	if err := database.InitializeDB(); err != nil {
 		return err
 	}
@@ -22,7 +23,7 @@ func APICmd() error {
 
 	log.Println("Starting Discord API")
 
-	err := discordAPI.Start()
+	err := discordAPI.Start(ctx)
 	if err != nil {
 		return err
 	}
