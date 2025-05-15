@@ -19,11 +19,11 @@ func APICmd(ctx context.Context) error {
 
 	db := database.GetDB()
 
-	discordAPI := api.NewDiscordAPI(db)
+	discordAPI := api.NewDiscordAPI(ctx, db)
 
 	log.Println("Starting Discord API")
 
-	err := discordAPI.Start(ctx)
+	err := discordAPI.Start()
 	if err != nil {
 		return err
 	}
