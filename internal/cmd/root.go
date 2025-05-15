@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
-func Execute() {
+func Execute(ctx context.Context) int {
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
@@ -22,4 +23,5 @@ func Execute() {
 	<-quit
 	log.Println("Shutting down...")
 
+	return 0
 }
