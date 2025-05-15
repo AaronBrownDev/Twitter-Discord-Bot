@@ -8,6 +8,6 @@ func RunMigrations() error {
 		return errors.New("database not initialized")
 	}
 
-	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS channel (guildID TEXT PRIMARY KEY, channelID TEXT NOT NULL, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`)
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS channel (guildID TEXT PRIMARY KEY, channelID TEXT NOT NULL, assignedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`)
 	return err
 }
