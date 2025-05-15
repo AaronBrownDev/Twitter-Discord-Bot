@@ -11,7 +11,7 @@ var db *sql.DB
 
 func InitializeDB() error {
 	var err error
-	db, err = sql.Open("sqlite3", "./database.db")
+	db, err = sql.Open("sqlite3", "./sqlite/discord_bot.db")
 
 	return err
 }
