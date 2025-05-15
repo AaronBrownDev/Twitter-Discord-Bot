@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	//"Twitter-Discord-Bot/internal/api"
-	"Twitter-Discord-Bot/internal/database"
+	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/api"
+	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/database"
 	"log"
 )
 
@@ -12,11 +12,16 @@ func APICmd() error {
 	}
 	defer database.CloseDB()
 
-	//db := database.GetDB()
+	db := database.GetDB()
 
-	//discordAPI := api.NewDiscordAPI(db)
+	discordAPI := api.NewDiscordAPI(db)
 
 	log.Println("Starting Discord API")
+
+	err := discordAPI.Start()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

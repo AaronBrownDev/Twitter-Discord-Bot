@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
@@ -11,7 +13,6 @@ func InitializeDB() error {
 	var err error
 	db, err = sql.Open("sqlite3", "./database.db")
 
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS channel (guildID TEXT PRIMARY KEY, channelID TEXT NOT NULL, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`)
 	return err
 }
 

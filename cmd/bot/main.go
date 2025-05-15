@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Twitter-Discord-Bot/internal/cmd"
+	"github.com/AaronBrownDev/Twitter-Discord-Bot/internal/cmd"
 )
 
 func main() {
