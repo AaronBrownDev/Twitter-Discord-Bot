@@ -12,6 +12,10 @@ func APICmd() error {
 	}
 	defer database.CloseDB()
 
+	if err := database.RunMigrations(); err != nil {
+		return err
+	}
+
 	db := database.GetDB()
 
 	discordAPI := api.NewDiscordAPI(db)
